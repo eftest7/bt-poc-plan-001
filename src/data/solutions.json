@@ -1,0 +1,289 @@
+{
+    "solutions": [
+        {
+            "id": "pra",
+            "name": "Privileged Remote Access (PRA)",
+            "description": "Secure remote access for vendors, IT teams, and service desks without VPN.",
+            "icon": "🔐",
+            "useCases": [
+                {
+                    "id": "pra-1",
+                    "text": "Secure vendor access to internal systems"
+                },
+                {
+                    "id": "pra-2",
+                    "text": "IT help desk remote support"
+                },
+                {
+                    "id": "pra-3",
+                    "text": "Session recording and auditing"
+                },
+                {
+                    "id": "pra-4",
+                    "text": "Credential injection without exposure"
+                },
+                {
+                    "id": "pra-5",
+                    "text": "Jump host replacement"
+                },
+                {
+                    "id": "pra-6",
+                    "text": "Multi-cloud infrastructure access"
+                }
+            ],
+            "prereqs": [
+                "Virtual appliance deployment capability (VMware, Hyper-V, or cloud)",
+                "Network access from appliance to target systems (SSH/RDP/VNC ports)",
+                "SSL certificate for secure access portal",
+                "DNS entry for public/private access URL",
+                "Active Directory or LDAP for user authentication (optional but recommended)",
+                "Firewall rules to allow outbound HTTPS (443) for cloud services"
+            ]
+        },
+        {
+            "id": "rs",
+            "name": "Remote Support (RS)",
+            "description": "Enterprise-grade remote support for IT help desks and customer support teams.",
+            "icon": "🖥️",
+            "useCases": [
+                {
+                    "id": "rs-1",
+                    "text": "End-user desktop support"
+                },
+                {
+                    "id": "rs-2",
+                    "text": "Unattended access to servers and workstations"
+                },
+                {
+                    "id": "rs-3",
+                    "text": "Cross-platform support (Windows, Mac, Linux)"
+                },
+                {
+                    "id": "rs-4",
+                    "text": "Mobile device support"
+                },
+                {
+                    "id": "rs-5",
+                    "text": "Integration with ITSM tools (ServiceNow, Jira)"
+                },
+                {
+                    "id": "rs-6",
+                    "text": "Co-browsing for web application support"
+                }
+            ],
+            "prereqs": [
+                "Cloud-hosted or on-premise appliance deployment",
+                "Outbound internet access for cloud relay (if cloud-hosted)",
+                "Representative console installation on support agent machines",
+                "End-user firewall exceptions for Jump Client (if unattended access)",
+                "SAML/SSO integration for single sign-on (optional)",
+                "API access for ITSM integrations"
+            ]
+        },
+        {
+            "id": "epm-windows",
+            "name": "Endpoint Privilege Management for Windows",
+            "description": "Remove local admin rights while enabling users to run approved applications.",
+            "icon": "🛡️",
+            "useCases": [
+                {
+                    "id": "epm-w-1",
+                    "text": "Remove local admin rights from end users"
+                },
+                {
+                    "id": "epm-w-2",
+                    "text": "Application elevation with policy-based approval"
+                },
+                {
+                    "id": "epm-w-3",
+                    "text": "Just-in-time privilege elevation"
+                },
+                {
+                    "id": "epm-w-4",
+                    "text": "Self-service elevation with business justification"
+                },
+                {
+                    "id": "epm-w-5",
+                    "text": "Trusted application lists (whitelisting)"
+                },
+                {
+                    "id": "epm-w-6",
+                    "text": "PowerShell and script control"
+                }
+            ],
+            "prereqs": [
+                "Windows endpoints for agent deployment (Windows 10/11, Server 2016+)",
+                "Software deployment tool (SCCM, Intune, GPO)",
+                "EPM Console/Policy Editor installation",
+                "Test group of endpoints for pilot deployment",
+                "Admin accounts for policy configuration",
+                "Logging/SIEM integration for audit events (optional)"
+            ]
+        },
+        {
+            "id": "epm-mac",
+            "name": "Endpoint Privilege Management for Mac",
+            "description": "Enforce least privilege on macOS devices without hindering productivity.",
+            "icon": "🍎",
+            "useCases": [
+                {
+                    "id": "epm-m-1",
+                    "text": "Remove local admin rights from Mac users"
+                },
+                {
+                    "id": "epm-m-2",
+                    "text": "Application elevation on macOS"
+                },
+                {
+                    "id": "epm-m-3",
+                    "text": "sudo command control and elevation"
+                },
+                {
+                    "id": "epm-m-4",
+                    "text": "Preference pane and system extension management"
+                },
+                {
+                    "id": "epm-m-5",
+                    "text": "Integration with Jamf or other MDM"
+                }
+            ],
+            "prereqs": [
+                "macOS endpoints (macOS 11+) for agent deployment",
+                "MDM solution (Jamf Pro, Mosyle, Kandji) for deployment",
+                "Apple Business Manager enrollment (recommended)",
+                "Test group of Mac devices for pilot",
+                "Full Disk Access and other PPPC approvals via MDM"
+            ]
+        },
+        {
+            "id": "password-safe",
+            "name": "Password Safe",
+            "description": "Privileged credential and session management for enterprise environments.",
+            "icon": "🔑",
+            "useCases": [
+                {
+                    "id": "ps-1",
+                    "text": "Automated password rotation for service accounts"
+                },
+                {
+                    "id": "ps-2",
+                    "text": "Privileged session recording and keystroke logging"
+                },
+                {
+                    "id": "ps-3",
+                    "text": "SSH key management"
+                },
+                {
+                    "id": "ps-4",
+                    "text": "Application-to-application password management (A2A)"
+                },
+                {
+                    "id": "ps-5",
+                    "text": "Secrets management for DevOps pipelines"
+                },
+                {
+                    "id": "ps-6",
+                    "text": "Just-in-time access workflows with approvals"
+                },
+                {
+                    "id": "ps-7",
+                    "text": "Discovery of privileged accounts across the network"
+                }
+            ],
+            "prereqs": [
+                "Virtual appliance or hardware deployment",
+                "Service accounts with permissions to manage target systems",
+                "Network access to managed systems (LDAP, WinRM, SSH)",
+                "SSL certificate for web portal",
+                "Active Directory integration for authentication",
+                "Database connectivity for secrets storage",
+                "API access for DevOps integrations (optional)"
+            ]
+        },
+        {
+            "id": "identity-security-insights",
+            "name": "Identity Security Insights",
+            "description": "Visibility and analytics for identity-related risks across the enterprise.",
+            "icon": "📊",
+            "useCases": [
+                {
+                    "id": "isi-1",
+                    "text": "Privileged account discovery and inventory"
+                },
+                {
+                    "id": "isi-2",
+                    "text": "Identity attack path analysis"
+                },
+                {
+                    "id": "isi-3",
+                    "text": "Active Directory security posture assessment"
+                },
+                {
+                    "id": "isi-4",
+                    "text": "Cloud identity risk visibility (Azure AD, AWS IAM)"
+                },
+                {
+                    "id": "isi-5",
+                    "text": "Continuous compliance monitoring"
+                }
+            ],
+            "prereqs": [
+                "Read access to Active Directory",
+                "Cloud connector configuration (Azure, AWS, GCP)",
+                "Network access from collector to identity sources",
+                "Service account with appropriate read permissions",
+                "SIEM integration for alert forwarding (optional)"
+            ]
+        }
+    ],
+    "successCriteriaTemplates": {
+        "pra": [
+            "Successfully deploy PRA appliance in customer environment",
+            "Configure authentication integration (AD/LDAP/SAML)",
+            "Create vault credentials for target systems",
+            "Demonstrate secure vendor access workflow",
+            "Validate session recording and playback",
+            "Test credential injection for RDP/SSH sessions"
+        ],
+        "rs": [
+            "Deploy Remote Support infrastructure (cloud or on-prem)",
+            "Install representative console on support agent machines",
+            "Conduct attended support session with end-user",
+            "Deploy Jump Client for unattended access",
+            "Validate session recording and reporting",
+            "Test ITSM integration (if applicable)"
+        ],
+        "epm-windows": [
+            "Deploy EPM agent to pilot group of Windows endpoints",
+            "Create baseline policy for standard applications",
+            "Remove local admin rights from test users",
+            "Test application elevation workflows",
+            "Validate audit logging and reporting",
+            "Demonstrate self-service elevation with justification"
+        ],
+        "epm-mac": [
+            "Deploy EPM agent to pilot group of Mac endpoints via MDM",
+            "Configure PPPC and other required permissions",
+            "Create baseline policy for macOS applications",
+            "Test application and sudo elevation",
+            "Remove admin rights from test Mac users",
+            "Validate policy enforcement and reporting"
+        ],
+        "password-safe": [
+            "Deploy Password Safe appliance",
+            "Onboard test set of managed accounts",
+            "Configure password rotation policy",
+            "Demonstrate privileged session launch with recording",
+            "Test access request and approval workflow",
+            "Validate API access for secrets retrieval (if applicable)"
+        ],
+        "identity-security-insights": [
+            "Deploy Identity Security Insights collectors",
+            "Connect to Active Directory for account discovery",
+            "Configure cloud identity connectors (if applicable)",
+            "Generate privileged account inventory report",
+            "Demonstrate attack path visualization",
+            "Review AD security posture findings"
+        ]
+    }
+}
