@@ -73,6 +73,8 @@ function PlannerPage() {
 
     return (
         <div className="planner-page">
+            <h1 className="page-title">POC Planner</h1>
+
             {/* Section 1: Solution Selector */}
             <section className="page-section fade-in">
                 <SolutionSelector
