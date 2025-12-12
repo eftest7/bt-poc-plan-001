@@ -21,8 +21,9 @@ FROM nginx:alpine
 # Copy built files from build stage
 COPY --from=build /app/dist /usr/share/nginx/html
 
-# Copy nginx configuration if needed
-# COPY nginx.conf /etc/nginx/nginx.conf
+# Copy env script to run on startup
+COPY env.sh /docker-entrypoint.d/40-env.sh
+RUN chmod +x /docker-entrypoint.d/40-env.sh && sed -i 's/\r$//' /docker-entrypoint.d/40-env.sh
 
 # Expose port 8080 (Cloud Run default)
 EXPOSE 8080
