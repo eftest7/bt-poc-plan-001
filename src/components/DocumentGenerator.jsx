@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import solutionsData from '../data/solutions.json';
 import { savePocPlan, formatPlanForSave } from '../services/pocPlanService';
 
 function DocumentGenerator({
@@ -9,10 +8,9 @@ function DocumentGenerator({
     customerInfo,
     onCustomerInfoChange
 }) {
-    const [activeTab, setActiveTab] = useState('prereqs');
+    const [activeTab, setActiveTab] = useState('combined');
     const [isSaving, setIsSaving] = useState(false);
     const [saveMessage, setSaveMessage] = useState(null);
-    const { successCriteriaTemplates } = solutionsData;
 
     const handleInputChange = (field, value) => {
         onCustomerInfoChange({ ...customerInfo, [field]: value });
@@ -39,52 +37,48 @@ function DocumentGenerator({
     const generateTextContent = () => {
         let content = '';
 
-        if (activeTab === 'prereqs') {
-            content += `PRE-REQUISITES DOCUMENT\n`;
-            content += `========================\n\n`;
+        // Combined document
+        content += `POC PLAN\n`;
+        content += `========\n\n`;
 
-            if (customerInfo.companyName) {
-                content += `Customer: ${customerInfo.companyName}\n`;
-                content += `Contact: ${customerInfo.contactName} (${customerInfo.contactEmail})\n`;
-                content += `SE: ${customerInfo.seName}\n\n`;
+        if (customerInfo.companyName) {
+            content += `Customer: ${customerInfo.companyName}\n`;
+            if (customerInfo.pocStartDate) {
+                content += `Date: ${customerInfo.pocStartDate}\n`;
             }
+            content += `\n`;
+        }
 
-            solutions.forEach(solution => {
-                content += `\n${solution.name}\n`;
-                content += '-'.repeat(solution.name.length) + '\n';
-                solution.prereqs.forEach(prereq => {
-                    content += `• ${prereq}\n`;
-                });
+        solutions.forEach(solution => {
+            const { selected, custom } = getSelectedUseCasesForSolution(solution);
+
+            content += `\n${solution.name}\n`;
+            content += '='.repeat(solution.name.length) + '\n\n';
+
+            // Pre-requisites section
+            content += 'Technical Pre-requisites:\n';
+            (solution.solutionPrereqs || solution.prereqs || []).forEach(prereq => {
+                content += `  • ${prereq}\n`;
             });
-        } else {
-            content += `MUTUAL POC SUCCESS PLAN\n`;
-            content += `========================\n\n`;
 
-            if (customerInfo.companyName) {
-                content += `Customer: ${customerInfo.companyName}\n`;
-                content += `POC Period: ${customerInfo.pocStartDate} to ${customerInfo.pocEndDate}\n\n`;
-            }
-
-            solutions.forEach(solution => {
-                const { selected, custom } = getSelectedUseCasesForSolution(solution);
-                content += `\n${solution.name}\n`;
-                content += '-'.repeat(solution.name.length) + '\n';
-
-                content += '\nUse Cases:\n';
+            // Success criteria section
+            content += '\nSuccess Criteria:\n';
+            if (selected.length === 0 && !custom) {
+                content += '  (No success criteria defined - select use cases to define success criteria)\n';
+            } else {
+                content += `  ${'Milestone'.padEnd(50)} | Owner | Target Date | Status\n`;
+                content += `  ${'-'.repeat(50)}-|-------|-------------|--------\n`;
                 selected.forEach(uc => {
-                    content += `• ${uc.text}\n`;
+                    const milestone = uc.text.length > 48 ? uc.text.substring(0, 47) + '…' : uc.text.padEnd(50);
+                    content += `  [ ] ${milestone} | —     | —           | Pending\n`;
                 });
                 if (custom) {
-                    content += `• ${custom}\n`;
+                    const milestone = custom.length > 48 ? custom.substring(0, 47) + '…' : custom.padEnd(50);
+                    content += `  [ ] ${milestone} | —     | —           | Pending\n`;
                 }
-
-                content += '\nSuccess Criteria:\n';
-                const criteria = successCriteriaTemplates[solution.id] || [];
-                criteria.forEach(c => {
-                    content += `[ ] ${c}\n`;
-                });
-            });
-        }
+            }
+            content += '\n';
+        });
 
         return content;
     };
@@ -133,85 +127,23 @@ function DocumentGenerator({
                     </div>
 
                     <div className="form-group">
-                        <label>Customer Contact</label>
-                        <input
-                            type="text"
-                            value={customerInfo.contactName}
-                            onChange={(e) => handleInputChange('contactName', e.target.value)}
-                            placeholder="John Smith"
-                        />
-                    </div>
-
-                    <div className="form-group">
-                        <label>Contact Email</label>
-                        <input
-                            type="email"
-                            value={customerInfo.contactEmail}
-                            onChange={(e) => handleInputChange('contactEmail', e.target.value)}
-                            placeholder="john.smith@acme.com"
-                        />
-                    </div>
-
-                    <div className="form-group">
-                        <label>SE Name</label>
-                        <input
-                            type="text"
-                            value={customerInfo.seName}
-                            onChange={(e) => handleInputChange('seName', e.target.value)}
-                            placeholder="Your Name"
-                        />
-                    </div>
-
-                    <div className="form-group">
-                        <label>POC Start Date</label>
+                        <label>Date</label>
                         <input
                             type="date"
                             value={customerInfo.pocStartDate}
                             onChange={(e) => handleInputChange('pocStartDate', e.target.value)}
                         />
                     </div>
-
-                    <div className="form-group">
-                        <label>POC End Date</label>
-                        <input
-                            type="date"
-                            value={customerInfo.pocEndDate}
-                            onChange={(e) => handleInputChange('pocEndDate', e.target.value)}
-                        />
-                    </div>
                 </div>
 
                 <div className="glass-card document-preview">
-                    <div className="document-tabs">
-                        <button
-                            className={`tab-button ${activeTab === 'prereqs' ? 'active' : ''}`}
-                            onClick={() => setActiveTab('prereqs')}
-                        >
-                            Pre-requisites
-                        </button>
-                        <button
-                            className={`tab-button ${activeTab === 'success' ? 'active' : ''}`}
-                            onClick={() => setActiveTab('success')}
-                        >
-                            Success Plan
-                        </button>
-                    </div>
-
                     <div className="document-content">
-                        {activeTab === 'prereqs' ? (
-                            <PrereqsDocument
-                                solutions={solutions}
-                                customerInfo={customerInfo}
-                            />
-                        ) : (
-                            <SuccessPlanDocument
-                                solutions={solutions}
-                                selectedUseCases={selectedUseCases}
-                                customUseCases={customUseCases}
-                                customerInfo={customerInfo}
-                                successCriteriaTemplates={successCriteriaTemplates}
-                            />
-                        )}
+                        <CombinedDocument
+                            solutions={solutions}
+                            selectedUseCases={selectedUseCases}
+                            customUseCases={customUseCases}
+                            customerInfo={customerInfo}
+                        />
                     </div>
 
                     <div className="document-actions">
@@ -240,41 +172,11 @@ function DocumentGenerator({
     );
 }
 
-function PrereqsDocument({ solutions, customerInfo }) {
-    return (
-        <div className="prereqs-document">
-            <div className="document-header">
-                <h2>Technical Pre-requisites</h2>
-                {customerInfo.companyName && (
-                    <p className="document-meta">
-                        Prepared for: <strong>{customerInfo.companyName}</strong>
-                    </p>
-                )}
-            </div>
-
-            {solutions.map(solution => (
-                <div key={solution.id} className="prereqs-section">
-                    <h4>
-                        <span>{solution.icon}</span>
-                        {solution.name}
-                    </h4>
-                    <ul className="prereqs-list">
-                        {solution.prereqs.map((prereq, index) => (
-                            <li key={index}>{prereq}</li>
-                        ))}
-                    </ul>
-                </div>
-            ))}
-        </div>
-    );
-}
-
-function SuccessPlanDocument({
+function CombinedDocument({
     solutions,
     selectedUseCases,
     customUseCases,
-    customerInfo,
-    successCriteriaTemplates
+    customerInfo
 }) {
     const getSelectedUseCasesForSolution = (solution) => {
         const selectedIds = selectedUseCases[solution.id] || [];
@@ -282,63 +184,98 @@ function SuccessPlanDocument({
     };
 
     return (
-        <div className="success-plan-document">
+        <div className="combined-document">
             <div className="document-header">
-                <h2>Mutual POC Success Plan</h2>
+                <h2>POC Plan</h2>
                 {customerInfo.companyName && (
                     <p className="document-meta">
                         <strong>{customerInfo.companyName}</strong>
-                        {customerInfo.pocStartDate && customerInfo.pocEndDate && (
-                            <span> | POC Period: {customerInfo.pocStartDate} to {customerInfo.pocEndDate}</span>
+                        {customerInfo.pocStartDate && (
+                            <span> | Date: {customerInfo.pocStartDate}</span>
                         )}
                     </p>
                 )}
             </div>
 
-            {solutions.map(solution => {
-                const selected = getSelectedUseCasesForSolution(solution);
-                const custom = customUseCases[solution.id];
-                const criteria = successCriteriaTemplates[solution.id] || [];
+            {solutions.length === 0 ? (
+                <div className="empty-doc-message" style={{ padding: '1rem', fontStyle: 'italic', opacity: 0.7 }}>
+                    Select solutions to generate POC plan.
+                </div>
+            ) : (
+                solutions.map(solution => {
+                    const selected = getSelectedUseCasesForSolution(solution);
+                    const custom = customUseCases[solution.id];
 
-                return (
-                    <div key={solution.id} className="success-plan-section">
-                        <h4>
-                            <span>{solution.icon}</span>
-                            {solution.name}
-                        </h4>
+                    return (
+                        <div key={solution.id} className="solution-section">
+                            <h3>
+                                <span>{solution.icon}</span>
+                                {solution.name}
+                            </h3>
 
-                        <h5>Selected Use Cases</h5>
-                        <ul className="prereqs-list">
-                            {selected.map(uc => (
-                                <li key={uc.id}>{uc.text}</li>
-                            ))}
-                            {custom && <li><em>{custom}</em></li>}
-                        </ul>
+                            <div className="prereqs-subsection">
+                                <h4>Technical Pre-requisites</h4>
+                                <ul className="prereqs-list">
+                                    {(solution.solutionPrereqs || solution.prereqs || []).map((prereq, index) => (
+                                        <li key={index}>{prereq}</li>
+                                    ))}
+                                </ul>
+                            </div>
 
-                        <h5>Success Criteria</h5>
-                        <table className="success-plan-table">
-                            <thead>
-                                <tr>
-                                    <th>Milestone</th>
-                                    <th>Owner</th>
-                                    <th>Target Date</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {criteria.map((criterion, index) => (
-                                    <tr key={index}>
-                                        <td>{criterion}</td>
-                                        <td>—</td>
-                                        <td>—</td>
-                                        <td><span className="status-badge status-pending">Pending</span></td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                );
-            })}
+                            <div className="success-subsection">
+                                <h4>Success Criteria</h4>
+                                {selected.length === 0 && !custom ? (
+                                    <p className="empty-doc-message" style={{ padding: '0.5rem', fontStyle: 'italic', opacity: 0.7 }}>
+                                        No success criteria defined - select use cases to define success criteria.
+                                    </p>
+                                ) : (
+                                    <table className="success-plan-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Milestone</th>
+                                                <th>Prerequisites</th>
+                                                <th>Owner</th>
+                                                <th>Target Date</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {selected.map((uc) => (
+                                                <tr key={uc.id}>
+                                                    <td>{uc.text}</td>
+                                                    <td>
+                                                        {uc.prerequisites && uc.prerequisites.length > 0 ? (
+                                                            <ul style={{ margin: 0, paddingLeft: '1.2rem', fontSize: '0.9em' }}>
+                                                                {uc.prerequisites.map((prereq, idx) => (
+                                                                    <li key={idx}>{prereq}</li>
+                                                                ))}
+                                                            </ul>
+                                                        ) : (
+                                                            '—'
+                                                        )}
+                                                    </td>
+                                                    <td>—</td>
+                                                    <td>—</td>
+                                                    <td><span className="status-badge status-pending">Pending</span></td>
+                                                </tr>
+                                            ))}
+                                            {custom && (
+                                                <tr>
+                                                    <td><em>{custom}</em></td>
+                                                    <td>—</td>
+                                                    <td>—</td>
+                                                    <td>—</td>
+                                                    <td><span className="status-badge status-pending">Pending</span></td>
+                                                </tr>
+                                            )}
+                                        </tbody>
+                                    </table>
+                                )}
+                            </div>
+                        </div>
+                    );
+                })
+            )}
         </div>
     );
 }

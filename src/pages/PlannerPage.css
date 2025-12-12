@@ -1,0 +1,43 @@
+.planner-page {
+    padding: var(--space-lg);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.empty-planner {
+    text-align: center;
+    padding: var(--space-2xl);
+    max-width: 500px;
+    margin: var(--space-2xl) auto;
+}
+
+.empty-planner .empty-icon {
+    font-size: 4rem;
+    margin-bottom: var(--space-lg);
+}
+
+.empty-planner h2 {
+    margin-bottom: var(--space-md);
+}
+
+.empty-planner>p {
+    color: var(--text-secondary);
+    margin-bottom: var(--space-xl);
+}
+
+.empty-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-md);
+}
+
+.or-divider {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+}
+
+.hint {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}

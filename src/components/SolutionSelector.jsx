@@ -1,8 +1,4 @@
-import solutionsData from '../data/solutions.json';
-
-function SolutionSelector({ selectedSolutions, onSelect }) {
-    const { solutions } = solutionsData;
-
+function SolutionSelector({ solutions, selectedSolutions, onSelect }) {
     const handleCardClick = (solution) => {
         const isSelected = selectedSolutions.some(s => s.id === solution.id);
         if (isSelected) {
@@ -19,7 +15,7 @@ function SolutionSelector({ selectedSolutions, onSelect }) {
                 <p>Choose the products you want to evaluate in your POC. You can select multiple solutions.</p>
             </div>
 
-            <div className="solutions-grid">
+            <div className="solutions-list">
                 {solutions.map((solution, index) => {
                     const isSelected = selectedSolutions.some(s => s.id === solution.id);
                     return (
@@ -30,9 +26,13 @@ function SolutionSelector({ selectedSolutions, onSelect }) {
                             style={{ animationDelay: `${index * 50}ms` }}
                         >
                             <div className="solution-check">✓</div>
-                            <div className="solution-icon">{solution.icon}</div>
-                            <h3 className="solution-name">{solution.name}</h3>
-                            <p className="solution-description">{solution.description}</p>
+                            <div className="solution-content">
+                                <div className="solution-icon">{solution.icon}</div>
+                                <div className="solution-details">
+                                    <h3 className="solution-name">{solution.name}</h3>
+                                    <p className="solution-description">{solution.description}</p>
+                                </div>
+                            </div>
                         </div>
                     );
                 })}
