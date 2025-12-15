@@ -1,5 +1,5 @@
 .planner-page {
-    padding: var(--space-2xl) var(--space-lg);
+    padding: var(--space-lg) var(--space-lg);
     max-width: 1200px;
     margin: 0 auto;
     display: flex;
@@ -15,8 +15,8 @@
     height: 1px;
     background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
     width: 100%;
-    margin: var(--space-lg) 0;
-    opacity: 0.5;
+    margin: var(--space-sm) 0;
+    opacity: 0.3;
 }
 
 
