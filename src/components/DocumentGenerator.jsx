@@ -159,18 +159,8 @@ function DocumentGenerator({
                     </div>
 
                     <div className="document-actions">
-                        <button
-                            className="btn btn-primary"
-                            onClick={handleSave}
-                            disabled={isSaving}
-                        >
-                            {isSaving ? '💾 Saving...' : '💾 Save to Cloud'}
-                        </button>
                         <button className="btn btn-secondary" onClick={handleCopyToClipboard}>
                             📋 Copy to Clipboard
-                        </button>
-                        <button className="btn btn-secondary" onClick={handlePrint}>
-                            🖨️ Print / Save PDF
                         </button>
                         {onNewPlan && (
                             <button
