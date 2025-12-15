@@ -5,29 +5,7 @@
     overflow-x: hidden;
 }
 
-.dashboard-header {
-    margin-bottom: 2rem;
-    padding: 0 var(--space-md);
-}
 
-.dashboard-header h1 {
-    font-size: 2rem;
-    margin-bottom: 0.5rem;
-    color: var(--text-primary);
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    background: none;
-    -webkit-background-clip: initial;
-    -webkit-text-fill-color: initial;
-    background-clip: initial;
-}
-
-.dashboard-header p {
-    color: var(--text-secondary);
-    font-size: 1rem;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-}
 
 /* Stats Overview */
 .stats-overview {
@@ -80,65 +58,7 @@
     flex-wrap: wrap;
 }
 
-.search-box {
-    flex: 1;
-    min-width: 200px;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
-.search-label {
-    color: var(--text-primary);
-    font-size: 0.875rem;
-    font-weight: 600;
-    letter-spacing: 0.3px;
-}
-
-.search-input-wrapper {
-    position: relative;
-    width: 100%;
-}
-
-.search-icon {
-    position: absolute;
-    left: 0.875rem;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 1rem;
-    opacity: 0.6;
-    pointer-events: none;
-    z-index: 1;
-}
-
-.search-input {
-    width: 100%;
-    max-width: 100%;
-    padding: 0.875rem 2.5rem 0.875rem 2.75rem;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
-    color: var(--text-primary);
-    font-size: 0.9375rem;
-    transition: all 0.3s ease;
-    box-sizing: border-box;
-}
-
-.search-input:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    background: rgba(255, 255, 255, 0.08);
-}
-
-.search-input::placeholder {
-    color: var(--text-secondary);
-}
-
 .clear-search {
-    position: absolute;
-    right: 0.75rem;
-    top: 50%;
-    transform: translateY(-50%);
     background: none;
     border: none;
     color: var(--text-secondary);
@@ -146,6 +66,9 @@
     cursor: pointer;
     padding: 0.25rem;
     transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .clear-search:hover {
@@ -695,21 +618,7 @@
         padding-bottom: 1rem;
     }
 
-    .dashboard-header {
-        padding: 0 var(--space-sm);
-    }
 
-    .dashboard-header h1 {
-        font-size: 1.5rem;
-        background: none;
-        -webkit-background-clip: initial;
-        -webkit-text-fill-color: initial;
-        background-clip: initial;
-    }
-
-    .dashboard-header p {
-        font-size: 0.9375rem;
-    }
 
     .stats-overview {
         padding: 0 var(--space-sm);

@@ -4,6 +4,8 @@ import SolutionSelector from '../components/SolutionSelector';
 import UseCaseCollector from '../components/UseCaseCollector';
 import DocumentGenerator from '../components/DocumentGenerator';
 
+import './ManagementPage.css';
+
 function PlannerPage() {
     const [solutions, setSolutions] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -73,9 +75,11 @@ function PlannerPage() {
 
     return (
         <div className="planner-page">
-            <div className="page-title">
-                <span className="page-title-icon">📝</span>
-                <h1 className="page-title-text">POC Planner</h1>
+            <div className="page-header">
+                <div className="header-content">
+                    <h1><span className="page-icon">📝</span>POC Planner</h1>
+                    <p>Plan your POC by selecting solutions and use cases.</p>
+                </div>
             </div>
 
             {/* Section 1: Solution Selector */}

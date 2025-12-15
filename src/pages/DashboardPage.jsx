@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { getFullSolutionsData, updateUseCase, updateSolutionPrereq, deleteUseCase, deleteSolutionPrereq } from '../services/dataService';
 import './DashboardPage.css';
+import './ManagementPage.css';
 
 function DashboardPage() {
     const [solutions, setSolutions] = useState([]);
@@ -214,9 +215,11 @@ function DashboardPage() {
 
     return (
         <div className="dashboard-page">
-            <div className="dashboard-header">
-                <h1>📊 Dashboard</h1>
-                <p>View and analyze all solutions, use cases, and prerequisites</p>
+            <div className="page-header">
+                <div className="header-content">
+                    <h1><span className="page-icon">📊</span>Dashboard</h1>
+                    <p>View and analyze all solutions, use cases, and prerequisites</p>
+                </div>
             </div>
 
             {/* Stats Overview */}
@@ -278,27 +281,25 @@ function DashboardPage() {
 
             {/* Search and Filters - Below Top Section */}
             <div className="dashboard-controls">
-                <div className="search-box">
-                    <label className="search-label">Search</label>
-                    <div className="search-input-wrapper">
-                        <span className="search-icon">🔍</span>
-                        <input
-                            type="text"
-                            placeholder="Search use cases, prerequisites, or solutions..."
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                            className="search-input"
-                        />
-                        {searchTerm && (
-                            <button
-                                className="clear-search"
-                                onClick={() => setSearchTerm('')}
-                                aria-label="Clear search"
-                            >
-                                ✕
-                            </button>
-                        )}
-                    </div>
+                <div className="filter-bar glass-card" style={{ flex: 1, marginBottom: 0, padding: '0.5rem 1rem' }}>
+                    <label>Search:</label>
+                    <input
+                        type="text"
+                        placeholder="Search use cases, prerequisites, or solutions..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        style={{ flex: 1, border: 'none', background: 'transparent', color: 'var(--text-primary)', outline: 'none' }}
+                    />
+                    {searchTerm && (
+                        <button
+                            className="clear-search"
+                            onClick={() => setSearchTerm('')}
+                            aria-label="Clear search"
+                            style={{ position: 'relative', right: 'auto', top: 'auto', transform: 'none' }}
+                        >
+                            ✕
+                        </button>
+                    )}
                 </div>
 
                 <div className="view-mode-selector">
@@ -359,67 +360,67 @@ function DashboardPage() {
                                                 {item.solutionIcon} {item.solution}
                                             </span>
                                         </div>
-                                    <div className="edit-form">
-                                        <div className="form-group">
-                                            <label>
-                                                {item.type === 'usecase' ? 'Use Case Text:' : 'Prerequisite Text:'}
-                                            </label>
-                                            <textarea
-                                                value={editText}
-                                                onChange={(e) => setEditText(e.target.value)}
-                                                className="edit-textarea"
-                                                rows="3"
-                                                autoFocus
-                                            />
-                                        </div>
-
-                                        {item.type === 'usecase' && (
+                                        <div className="edit-form">
                                             <div className="form-group">
-                                                <label>Prerequisites:</label>
-                                                {editPrereqs.map((prereq, idx) => (
-                                                    <div key={idx} className="prereq-edit-row">
-                                                        <input
-                                                            type="text"
-                                                            value={prereq}
-                                                            onChange={(e) => handlePrereqChange(idx, e.target.value)}
-                                                            className="prereq-input"
-                                                            placeholder="Enter prerequisite..."
-                                                        />
-                                                        <button
-                                                            className="btn-icon remove-prereq-btn"
-                                                            onClick={() => handleRemovePrereq(idx)}
-                                                            title="Remove prerequisite"
-                                                        >
-                                                            ✕
-                                                        </button>
-                                                    </div>
-                                                ))}
+                                                <label>
+                                                    {item.type === 'usecase' ? 'Use Case Text:' : 'Prerequisite Text:'}
+                                                </label>
+                                                <textarea
+                                                    value={editText}
+                                                    onChange={(e) => setEditText(e.target.value)}
+                                                    className="edit-textarea"
+                                                    rows="3"
+                                                    autoFocus
+                                                />
+                                            </div>
+
+                                            {item.type === 'usecase' && (
+                                                <div className="form-group">
+                                                    <label>Prerequisites:</label>
+                                                    {editPrereqs.map((prereq, idx) => (
+                                                        <div key={idx} className="prereq-edit-row">
+                                                            <input
+                                                                type="text"
+                                                                value={prereq}
+                                                                onChange={(e) => handlePrereqChange(idx, e.target.value)}
+                                                                className="prereq-input"
+                                                                placeholder="Enter prerequisite..."
+                                                            />
+                                                            <button
+                                                                className="btn-icon remove-prereq-btn"
+                                                                onClick={() => handleRemovePrereq(idx)}
+                                                                title="Remove prerequisite"
+                                                            >
+                                                                ✕
+                                                            </button>
+                                                        </div>
+                                                    ))}
+                                                    <button
+                                                        className="btn btn-secondary btn-sm"
+                                                        onClick={handleAddPrereq}
+                                                    >
+                                                        + Add Prerequisite
+                                                    </button>
+                                                </div>
+                                            )}
+
+                                            <div className="edit-actions">
                                                 <button
-                                                    className="btn btn-secondary btn-sm"
-                                                    onClick={handleAddPrereq}
+                                                    className="btn btn-primary"
+                                                    onClick={() => handleEditSave(item)}
+                                                    disabled={saving}
                                                 >
-                                                    + Add Prerequisite
+                                                    {saving ? 'Saving...' : '💾 Save'}
+                                                </button>
+                                                <button
+                                                    className="btn btn-secondary"
+                                                    onClick={handleEditCancel}
+                                                    disabled={saving}
+                                                >
+                                                    Cancel
                                                 </button>
                                             </div>
-                                        )}
-
-                                        <div className="edit-actions">
-                                            <button
-                                                className="btn btn-primary"
-                                                onClick={() => handleEditSave(item)}
-                                                disabled={saving}
-                                            >
-                                                {saving ? 'Saving...' : '💾 Save'}
-                                            </button>
-                                            <button
-                                                className="btn btn-secondary"
-                                                onClick={handleEditCancel}
-                                                disabled={saving}
-                                            >
-                                                Cancel
-                                            </button>
                                         </div>
-                                    </div>
                                     </>
                                 ) : (
                                     <>
