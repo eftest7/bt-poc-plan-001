@@ -9,7 +9,13 @@ import DashboardPage from './pages/DashboardPage';
 import './App.css';
 
 function App() {
-  const [currentPage, setCurrentPage] = useState('planner');
+  const [currentPage, setCurrentPage] = useState('dashboard');
+
+  const handleNavigate = (page) => {
+    setCurrentPage(page);
+    // Scroll to top of the page
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   const renderPage = () => {
     switch (currentPage) {
@@ -30,13 +36,13 @@ function App() {
 
   return (
     <div className="app">
-      <Header currentPage={currentPage} onNavigate={setCurrentPage} />
+      <Header currentPage={currentPage} onNavigate={handleNavigate} />
       <main className="main-content">
         <div className="container">
           {renderPage()}
         </div>
       </main>
-      <BottomTabs currentPage={currentPage} onNavigate={setCurrentPage} />
+      <BottomTabs currentPage={currentPage} onNavigate={handleNavigate} />
     </div>
   );
 }

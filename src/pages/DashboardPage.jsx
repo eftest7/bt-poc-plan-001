@@ -256,16 +256,19 @@ function DashboardPage() {
                                     type="checkbox"
                                     checked={selectedSolutions.includes(solution.id)}
                                     onChange={() => toggleSolution(solution.id)}
+                                    className="solution-checkbox"
                                 />
-                                <span className="solution-icon">{solution.icon}</span>
-                                <span className="solution-name">{solution.name}</span>
-                                <div className="solution-counts">
-                                    <span className="count-badge usecase-badge" title="Use Cases">
-                                        🎯 {useCaseCount}
-                                    </span>
-                                    <span className="count-badge prereq-badge" title="Prerequisites">
-                                        📋 {prereqCount}
-                                    </span>
+                                <div className="solution-card-content">
+                                    <span className="solution-icon">{solution.icon}</span>
+                                    <span className="solution-name">{solution.name}</span>
+                                    <div className="solution-counts">
+                                        <span className="count-badge usecase-badge" title="Use Cases">
+                                            🎯 {useCaseCount}
+                                        </span>
+                                        <span className="count-badge prereq-badge" title="Prerequisites">
+                                            📋 {prereqCount}
+                                        </span>
+                                    </div>
                                 </div>
                             </label>
                         );
@@ -276,23 +279,26 @@ function DashboardPage() {
             {/* Search and Filters - Below Top Section */}
             <div className="dashboard-controls">
                 <div className="search-box">
-                    <span className="search-icon">🔍</span>
-                    <input
-                        type="text"
-                        placeholder="Search use cases, prerequisites, or solutions..."
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        className="search-input"
-                    />
-                    {searchTerm && (
-                        <button
-                            className="clear-search"
-                            onClick={() => setSearchTerm('')}
-                            aria-label="Clear search"
-                        >
-                            ✕
-                        </button>
-                    )}
+                    <label className="search-label">Search</label>
+                    <div className="search-input-wrapper">
+                        <span className="search-icon">🔍</span>
+                        <input
+                            type="text"
+                            placeholder="Search use cases, prerequisites, or solutions..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            className="search-input"
+                        />
+                        {searchTerm && (
+                            <button
+                                className="clear-search"
+                                onClick={() => setSearchTerm('')}
+                                aria-label="Clear search"
+                            >
+                                ✕
+                            </button>
+                        )}
+                    </div>
                 </div>
 
                 <div className="view-mode-selector">
@@ -300,19 +306,22 @@ function DashboardPage() {
                         className={`view-mode-btn ${viewMode === 'all' ? 'active' : ''}`}
                         onClick={() => setViewMode('all')}
                     >
-                        All
+                        <span className="view-mode-label">All</span>
+                        <span className="view-mode-count">{totals.total}</span>
                     </button>
                     <button
                         className={`view-mode-btn ${viewMode === 'usecases' ? 'active' : ''}`}
                         onClick={() => setViewMode('usecases')}
                     >
-                        Use Cases
+                        <span className="view-mode-label">Use Cases</span>
+                        <span className="view-mode-count">{totals.useCases}</span>
                     </button>
                     <button
                         className={`view-mode-btn ${viewMode === 'prereqs' ? 'active' : ''}`}
                         onClick={() => setViewMode('prereqs')}
                     >
-                        Prerequisites
+                        <span className="view-mode-label">Prerequisites</span>
+                        <span className="view-mode-count">{totals.prereqs}</span>
                     </button>
                 </div>
             </div>

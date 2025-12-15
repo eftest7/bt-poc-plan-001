@@ -2,12 +2,17 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 .main-content {
   flex: 1;
   padding: var(--space-xl) 0;
   padding-bottom: calc(var(--space-xl) + 70px); /* Add space for bottom tabs */
+  width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 .step-content {
@@ -42,12 +47,12 @@
 /* Solution Cards List */
 .solutions-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: var(--space-lg);
 }
 
 .solution-card {
-  padding: var(--space-xl);
+  padding: var(--space-lg);
   cursor: pointer;
   position: relative;
   overflow: hidden;
@@ -97,13 +102,13 @@
 }
 
 .solution-icon {
-  font-size: 3rem;
+  font-size: 2.5rem;
   flex-shrink: 0;
   margin-bottom: var(--space-sm);
 }
 
 .solution-name {
-  font-size: 1.25rem;
+  font-size: 1.125rem;
   font-weight: 600;
   margin-bottom: var(--space-sm);
 }
@@ -112,6 +117,8 @@
   font-size: 0.875rem;
   color: var(--text-secondary);
   line-height: 1.5;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .solution-check {
@@ -169,12 +176,14 @@
 }
 
 .use-case-prerequisites {
-  margin-left: 2rem;
+  margin-left: 1rem;
   padding: var(--space-sm) var(--space-md);
   background: rgba(255, 255, 255, 0.05);
   border-left: 3px solid var(--accent-primary);
   border-radius: 4px;
   font-size: 0.875rem;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .use-case-prerequisites strong {
@@ -371,19 +380,72 @@
 /* Responsive */
 @media (max-width: 768px) {
   h1 {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
+  }
+
+  h2 {
+    font-size: 1.25rem;
+  }
+
+  h3 {
+    font-size: 1.1rem;
   }
 
   .container {
     padding: 0 var(--space-md);
   }
 
+  .main-content {
+    padding: var(--space-md) 0;
+    padding-bottom: calc(var(--space-md) + 70px);
+  }
+
   .solutions-list {
     grid-template-columns: 1fr;
+    gap: var(--space-md);
+  }
+
+  .solution-card {
+    padding: var(--space-md);
   }
 
   .solution-icon {
-    font-size: 2.5rem;
+    font-size: 2rem;
+  }
+
+  .solution-name {
+    font-size: 1rem;
+  }
+
+  .solution-description {
+    font-size: 0.8125rem;
+  }
+
+  .use-case-prerequisites {
+    margin-left: 0;
+    margin-top: var(--space-sm);
+  }
+
+  .document-container {
+    gap: var(--space-md);
+  }
+
+  .customer-info-form,
+  .document-preview {
+    padding: var(--space-md);
+  }
+
+  .document-content {
+    padding: var(--space-md);
+  }
+
+  .navigation-buttons {
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .navigation-buttons .btn {
+    width: 100%;
   }
 }
 

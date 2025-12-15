@@ -73,7 +73,10 @@ function PlannerPage() {
 
     return (
         <div className="planner-page">
-            <h1 className="page-title">POC Planner</h1>
+            <div className="page-title">
+                <span className="page-title-icon">📝</span>
+                <h1 className="page-title-text">POC Planner</h1>
+            </div>
 
             {/* Section 1: Solution Selector */}
             <section className="page-section fade-in">

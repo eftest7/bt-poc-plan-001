@@ -5,6 +5,8 @@
     position: sticky;
     top: 0;
     z-index: 100;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .header-content {
@@ -12,16 +14,21 @@
     align-items: center;
     justify-content: space-between;
     position: relative;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .logo {
     display: flex;
     align-items: center;
     gap: var(--space-sm);
+    flex-shrink: 1;
+    min-width: 0;
 }
 
 .logo-icon {
     font-size: 1.75rem;
+    flex-shrink: 0;
 }
 
 .logo-text {
@@ -31,6 +38,9 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* Hamburger Button */
@@ -177,13 +187,92 @@
     z-index: 99;
 }
 
+@media (max-width: 768px) {
+    .header {
+        padding: var(--space-md) 0;
+    }
+
+    .logo-icon {
+        font-size: 1.5rem;
+    }
+
+    .logo-text {
+        font-size: 1.125rem;
+    }
+
+    .hamburger {
+        width: 40px;
+        height: 40px;
+    }
+
+    .nav-menu {
+        width: 280px;
+        right: -280px;
+        padding: var(--space-md);
+    }
+
+    .nav-item {
+        padding: var(--space-sm) var(--space-md);
+        font-size: 0.9375rem;
+    }
+
+    .nav-icon {
+        font-size: 1.125rem;
+    }
+}
+
 @media (max-width: 600px) {
+    .header {
+        padding: var(--space-sm) 0;
+    }
+
+    .logo-icon {
+        font-size: 1.25rem;
+    }
+
     .logo-text {
         font-size: 1rem;
+    }
+
+    .hamburger {
+        width: 36px;
+        height: 36px;
+        padding: 8px;
+    }
+
+    .hamburger span {
+        width: 18px;
     }
 
     .nav-menu {
         width: 100%;
         right: -100%;
+        padding: var(--space-sm);
+    }
+
+    .nav-menu-header {
+        font-size: 1rem;
+        padding-bottom: var(--space-sm);
+        margin-bottom: var(--space-sm);
+    }
+
+    .nav-item {
+        padding: var(--space-sm);
+        font-size: 0.875rem;
+    }
+
+    .nav-icon {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 375px) {
+    .logo-text {
+        font-size: 0.875rem;
+    }
+
+    .hamburger {
+        width: 32px;
+        height: 32px;
     }
 }

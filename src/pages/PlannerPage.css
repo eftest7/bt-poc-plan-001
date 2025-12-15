@@ -4,6 +4,32 @@
     margin: 0 auto;
 }
 
+.page-title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: var(--space-lg);
+    padding: var(--space-md);
+    background: var(--bg-secondary);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--glass-border);
+}
+
+.page-title-icon {
+    font-size: 2.5rem;
+    flex-shrink: 0;
+}
+
+.page-title-text {
+    font-size: 1.5rem;
+    font-weight: 600;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
 .empty-planner {
     text-align: center;
     padding: var(--space-2xl);

@@ -5,7 +5,16 @@
       "Bash(node scripts/migratePrereqs.js:*)",
       "Bash(git remote add:*)",
       "Bash(git add:*)",
-      "Bash(git commit -m \"$(cat <<''EOF''\nUpdate application with multi-page architecture and new features\n\n- Refactored App.jsx to use page-based navigation\n- Added bottom tab navigation component\n- Created new pages: Planner, Solutions, Use Cases, Prereqs, Dashboard\n- Added data service layer for Firebase integration\n- Updated styling and header component\n- Added .gitignore for proper version control\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>\nEOF\n)\")"
+      "Bash(git commit -m \"$(cat <<''EOF''\nUpdate application with multi-page architecture and new features\n\n- Refactored App.jsx to use page-based navigation\n- Added bottom tab navigation component\n- Created new pages: Planner, Solutions, Use Cases, Prereqs, Dashboard\n- Added data service layer for Firebase integration\n- Updated styling and header component\n- Added .gitignore for proper version control\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(echo:*)",
+      "Bash(cmd.exe /c \"npm install\")",
+      "Bash(powershell.exe -Command \"npm install\")",
+      "Bash(powershell.exe -Command \"refreshenv; npm install\")",
+      "Bash(powershell.exe -Command \"& ''C:\\Program Files\\nodejs\\npm.cmd'' install\")",
+      "Bash(powershell.exe -Command \"$env:Path += '';C:\\Program Files\\nodejs''; npm install\")",
+      "Bash(powershell.exe -Command \"$env:Path += '';C:\\Program Files\\nodejs''; & ''C:\\Program Files\\nodejs\\npm.cmd'' install\")",
+      "Bash(powershell.exe -Command \"npm --version\")",
+      "Bash(powershell.exe -Command \"npm run dev\")"
     ]
   }
 }
