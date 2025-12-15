@@ -73,7 +73,9 @@ function DocumentGenerator({
             } else {
                 selected.forEach(uc => {
                     content += `  [ ] ${uc.text}\n`;
-                    content += `      Owner: ____________ | Target: ____________ | Status: Pending\n`;
+                    content += `      Status: Pending\n`;
+                    content += `      Target date:\n`;
+                    content += `      Owner:\n`;
                     if (uc.prerequisites && uc.prerequisites.length > 0) {
                         content += `      Prerequisites:\n`;
                         uc.prerequisites.forEach(p => content += `      - ${p}\n`);
@@ -82,7 +84,9 @@ function DocumentGenerator({
                 });
                 if (custom) {
                     content += `  [ ] ${custom}\n`;
-                    content += `      Owner: ____________ | Target: ____________ | Status: Pending\n\n`;
+                    content += `      Status: Pending\n`;
+                    content += `      Target date:\n`;
+                    content += `      Owner:\n\n`;
                 }
             }
             content += '\n';
@@ -240,7 +244,7 @@ function CombinedDocument({
                             </h3>
 
                             <div className="prereqs-subsection">
-                                <h4>Technical Pre-requisites</h4>
+                                <h4 style={{ fontSize: '1.25rem', marginBottom: '1rem' }}>Technical Pre-requisites</h4>
                                 <ul className="prereqs-list">
                                     {(solution.solutionPrereqs || solution.prereqs || []).map((prereq, index) => (
                                         <li key={index}>{prereq.text || prereq}</li>
@@ -249,7 +253,7 @@ function CombinedDocument({
                             </div>
 
                             <div className="success-subsection">
-                                <h4>Success Criteria</h4>
+                                <h4 style={{ fontSize: '1.25rem', marginBottom: '1rem' }}>Success Criteria</h4>
                                 {selected.length === 0 && !custom ? (
                                     <p className="empty-doc-message" style={{ padding: '0.5rem', fontStyle: 'italic', opacity: 0.7 }}>
                                         No success criteria defined - select use cases to define success criteria.
@@ -261,12 +265,12 @@ function CombinedDocument({
                                                 <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem' }}>
                                                     <span style={{ fontSize: '1.25em', lineHeight: '1.2', color: 'var(--text-secondary)' }}>☐</span>
                                                     <div style={{ flex: 1 }}>
-                                                        <div style={{ fontWeight: 600, fontSize: '1.05em', marginBottom: '0.25rem' }}>{uc.text}</div>
+                                                        <div style={{ fontWeight: 600, fontSize: '1.05em', marginBottom: '0.75rem' }}>{uc.text}</div>
 
-                                                        <div style={{ display: 'flex', gap: '1.5rem', fontSize: '0.85em', color: 'var(--text-secondary)', marginBottom: '0.5rem', flexWrap: 'wrap' }}>
-                                                            <span>Owner: ____________</span>
-                                                            <span>Target: ____________</span>
-                                                            <span>Status: Pending</span>
+                                                        <div style={{ fontSize: '0.85em', color: 'var(--text-secondary)', marginBottom: '0.5rem', lineHeight: '1.8' }}>
+                                                            <div>Status: Pending</div>
+                                                            <div>Target date:</div>
+                                                            <div>Owner:</div>
                                                         </div>
 
                                                         {uc.prerequisites && uc.prerequisites.length > 0 && (
@@ -288,11 +292,11 @@ function CombinedDocument({
                                                 <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem' }}>
                                                     <span style={{ fontSize: '1.25em', lineHeight: '1.2', color: 'var(--text-secondary)' }}>☐</span>
                                                     <div style={{ flex: 1 }}>
-                                                        <div style={{ fontWeight: 600, fontSize: '1.05em', marginBottom: '0.25rem' }}>{custom}</div>
-                                                        <div style={{ display: 'flex', gap: '1.5rem', fontSize: '0.85em', color: 'var(--text-secondary)' }}>
-                                                            <span>Owner: ____________</span>
-                                                            <span>Target: ____________</span>
-                                                            <span>Status: Pending</span>
+                                                        <div style={{ fontWeight: 600, fontSize: '1.05em', marginBottom: '0.75rem' }}>{custom}</div>
+                                                        <div style={{ fontSize: '0.85em', color: 'var(--text-secondary)', lineHeight: '1.8' }}>
+                                                            <div>Status: Pending</div>
+                                                            <div>Target date:</div>
+                                                            <div>Owner:</div>
                                                         </div>
                                                     </div>
                                                 </div>
