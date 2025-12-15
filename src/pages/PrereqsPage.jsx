@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react';
 import { getAllSolutions, getAllUseCases, getAllSolutionPrereqs, addSolutionPrereq, updateSolutionPrereq, deleteSolutionPrereq } from '../services/dataService';
+import PageHeader from '../components/common/PageHeader';
+import SearchBar from '../components/common/SearchBar';
+import StatusMessage from '../components/common/StatusMessage';
 import './ManagementPage.css';
 
 function PrereqsPage() {
@@ -142,21 +145,18 @@ function PrereqsPage() {
 
     return (
         <div className="management-page">
-            <div className="page-header">
-                <div className="header-content">
-                    <h1><span className="page-icon">📋</span>Prerequisites Management</h1>
-                    <p>Manage technical prerequisites for each solution.</p>
-                </div>
-                <button className="btn btn-primary" onClick={openAddModal} disabled={solutions.length === 0}>
-                    <span>+</span> Add Prerequisite
-                </button>
-            </div>
+            <PageHeader
+                icon="📋"
+                title="Prerequisites Management"
+                description="Manage technical prerequisites for each solution."
+                actions={
+                    <button className="btn btn-primary" onClick={openAddModal} disabled={solutions.length === 0}>
+                        <span>+</span> Add Prerequisite
+                    </button>
+                }
+            />
 
-            {message && (
-                <div className={`message ${message.type}`}>
-                    {message.text}
-                </div>
-            )}
+            <StatusMessage type={message?.type} text={message?.text} />
 
             {solutions.length > 0 && (
                 <>
@@ -174,16 +174,13 @@ function PrereqsPage() {
                             ))}
                         </select>
                     </div>
-                    <div className="filter-bar glass-card">
-                        <label>Search:</label>
-                        <input
-                            type="text"
-                            placeholder="Search prerequisites..."
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                            style={{ flex: 1 }}
-                        />
-                    </div>
+                    <SearchBar
+                        searchTerm={searchTerm}
+                        value={searchTerm}
+                        onChange={setSearchTerm}
+                        placeholder="Search prerequisites..."
+                        style={{ flex: 1 }}
+                    />
                 </>
             )}
 

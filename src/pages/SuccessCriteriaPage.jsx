@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { getAllSolutions } from '../services/dataService';
 import { getAllSuccessCriteria, addSuccessCriteria, updateSuccessCriteria, deleteSuccessCriteria } from '../services/dataService';
+import PageHeader from '../components/common/PageHeader';
+import StatusMessage from '../components/common/StatusMessage';
 import './ManagementPage.css';
 
 function SuccessCriteriaPage() {
@@ -98,21 +100,18 @@ function SuccessCriteriaPage() {
 
     return (
         <div className="management-page">
-            <div className="page-header">
-                <div className="header-content">
-                    <h1><span className="page-icon">✅</span>Success Criteria Management</h1>
-                    <p>Define success criteria milestones for each solution.</p>
-                </div>
-                <button className="btn btn-primary" onClick={openAddModal} disabled={solutions.length === 0}>
-                    <span>+</span> Add Criteria
-                </button>
-            </div>
+            <PageHeader
+                icon="✅"
+                title="Success Criteria Management"
+                description="Define success criteria milestones for each solution."
+                actions={
+                    <button className="btn btn-primary" onClick={openAddModal} disabled={solutions.length === 0}>
+                        <span>+</span> Add Criteria
+                    </button>
+                }
+            />
 
-            {message && (
-                <div className={`message ${message.type}`}>
-                    {message.text}
-                </div>
-            )}
+            <StatusMessage type={message?.type} text={message?.text} />
 
             {solutions.length > 0 && (
                 <div className="filter-bar glass-card">

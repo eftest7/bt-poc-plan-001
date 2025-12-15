@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
 import { getAllSolutions } from '../services/dataService';
 import { getAllUseCases, addUseCase, updateUseCase, deleteUseCase } from '../services/dataService';
+import PageHeader from '../components/common/PageHeader';
+import SearchBar from '../components/common/SearchBar';
+import StatusMessage from '../components/common/StatusMessage';
 import './ManagementPage.css';
 
 function UseCasesPage() {
@@ -105,21 +108,18 @@ function UseCasesPage() {
 
     return (
         <div className="management-page">
-            <div className="page-header">
-                <div className="header-content">
-                    <h1><span className="page-icon">🎯</span>Use Cases Management</h1>
-                    <p>Manage use cases for each solution.</p>
-                </div>
-                <button className="btn btn-primary" onClick={openAddModal} disabled={solutions.length === 0}>
-                    <span>+</span> Add Use Case
-                </button>
-            </div>
+            <PageHeader
+                icon="🎯"
+                title="Use Cases Management"
+                description="Manage use cases for each solution."
+                actions={
+                    <button className="btn btn-primary" onClick={openAddModal} disabled={solutions.length === 0}>
+                        <span>+</span> Add Use Case
+                    </button>
+                }
+            />
 
-            {message && (
-                <div className={`message ${message.type}`}>
-                    {message.text}
-                </div>
-            )}
+            <StatusMessage type={message?.type} text={message?.text} />
 
             {solutions.length > 0 && (
                 <>
@@ -137,16 +137,13 @@ function UseCasesPage() {
                             ))}
                         </select>
                     </div>
-                    <div className="filter-bar glass-card">
-                        <label>Search:</label>
-                        <input
-                            type="text"
-                            placeholder="Search use cases..."
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                            style={{ flex: 1 }}
-                        />
-                    </div>
+                    <SearchBar
+                        searchTerm={searchTerm}
+                        value={searchTerm}
+                        onChange={setSearchTerm}
+                        placeholder="Search use cases..."
+                        style={{ flex: 1 }}
+                    />
                 </>
             )}
 

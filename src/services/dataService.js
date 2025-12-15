@@ -288,12 +288,10 @@ export async function getFullSolutionsData() {
             // Include both solution-level prereqs AND use-case-level prereqs
             solutionPrereqs: prereqsResult.prereqs
                 .filter(pr => pr.solutionId === solution.id ||
-                    (pr.useCaseId && useCasesResult.useCases.find(uc => uc.id === pr.useCaseId)?.solutionId === solution.id))
-                .map(pr => pr.text),
+                    (pr.useCaseId && useCasesResult.useCases.find(uc => uc.id === pr.useCaseId)?.solutionId === solution.id)),
             prereqs: prereqsResult.prereqs
                 .filter(pr => pr.solutionId === solution.id ||
                     (pr.useCaseId && useCasesResult.useCases.find(uc => uc.id === pr.useCaseId)?.solutionId === solution.id))
-                .map(pr => pr.text)
         }));
 
         console.log('Processed solutions with prereqs:', solutions);

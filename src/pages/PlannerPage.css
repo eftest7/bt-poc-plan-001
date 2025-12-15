@@ -1,7 +1,22 @@
 .planner-page {
-    padding: var(--space-lg);
+    padding: var(--space-2xl) var(--space-lg);
     max-width: 1200px;
     margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.page-section {
+    width: 100%;
+}
+
+.section-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    width: 100%;
+    margin: var(--space-lg) 0;
+    opacity: 0.5;
 }
 
 
@@ -42,4 +57,45 @@
 .hint {
     font-size: 0.875rem;
     color: var(--text-secondary);
+}
+
+/* New Plan Action */
+.new-plan-container {
+    margin-top: var(--space-2xl);
+    display: flex;
+    justify-content: center;
+    padding-top: var(--space-xl);
+    border-top: 1px solid var(--glass-border);
+    position: relative;
+    z-index: 10;
+}
+
+.new-plan-btn {
+    font-size: 1.1rem;
+    padding: var(--space-md) var(--space-xl);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-sm);
+    min-width: 200px;
+    background: rgba(239, 68, 68, 0.05) !important;
+    /* Subtle red tint */
+}
+
+.new-plan-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Ensure btn-danger is defined if not globally available */
+.btn-danger {
+    background: rgba(239, 68, 68, 0.1);
+    color: #fca5a5;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.btn-danger:hover {
+    background: rgba(239, 68, 68, 0.2);
+    border-color: rgba(239, 68, 68, 0.4);
+    color: #fff;
 }

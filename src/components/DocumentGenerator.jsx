@@ -6,7 +6,8 @@ function DocumentGenerator({
     selectedUseCases,
     customUseCases,
     customerInfo,
-    onCustomerInfoChange
+    onCustomerInfoChange,
+    onNewPlan
 }) {
     const [activeTab, setActiveTab] = useState('combined');
     const [isSaving, setIsSaving] = useState(false);
@@ -38,16 +39,20 @@ function DocumentGenerator({
         let content = '';
 
         // Combined document
-        content += `POC PLAN\n`;
-        content += `========\n\n`;
-
+        // Combined document
         if (customerInfo.companyName) {
-            content += `Customer: ${customerInfo.companyName}\n`;
-            if (customerInfo.pocStartDate) {
-                content += `Date: ${customerInfo.pocStartDate}\n`;
-            }
-            content += `\n`;
+            content += `${customerInfo.companyName.toUpperCase()}\n`;
         }
+        content += `PROOF OF CONCEPT IMPLEMENTATION PLAN\n`;
+        content += `====================================\n\n`;
+
+        if (customerInfo.pocStartDate) {
+            content += `Date: ${customerInfo.pocStartDate}\n\n`;
+        }
+
+        content += `Overview\n`;
+        content += `--------\n`;
+        content += `To ensure a successful Proof of Concept, please complete the technical pre-requisites and success criteria items outlined below.\n\n`;
 
         solutions.forEach(solution => {
             const { selected, custom } = getSelectedUseCasesForSolution(solution);
@@ -66,15 +71,18 @@ function DocumentGenerator({
             if (selected.length === 0 && !custom) {
                 content += '  (No success criteria defined - select use cases to define success criteria)\n';
             } else {
-                content += `  ${'Milestone'.padEnd(50)} | Owner | Target Date | Status\n`;
-                content += `  ${'-'.repeat(50)}-|-------|-------------|--------\n`;
                 selected.forEach(uc => {
-                    const milestone = uc.text.length > 48 ? uc.text.substring(0, 47) + '…' : uc.text.padEnd(50);
-                    content += `  [ ] ${milestone} | —     | —           | Pending\n`;
+                    content += `  [ ] ${uc.text}\n`;
+                    content += `      Owner: ____________ | Target: ____________ | Status: Pending\n`;
+                    if (uc.prerequisites && uc.prerequisites.length > 0) {
+                        content += `      Prerequisites:\n`;
+                        uc.prerequisites.forEach(p => content += `      - ${p}\n`);
+                    }
+                    content += `\n`;
                 });
                 if (custom) {
-                    const milestone = custom.length > 48 ? custom.substring(0, 47) + '…' : custom.padEnd(50);
-                    content += `  [ ] ${milestone} | —     | —           | Pending\n`;
+                    content += `  [ ] ${custom}\n`;
+                    content += `      Owner: ____________ | Target: ____________ | Status: Pending\n\n`;
                 }
             }
             content += '\n';
@@ -160,6 +168,15 @@ function DocumentGenerator({
                         <button className="btn btn-secondary" onClick={handlePrint}>
                             🖨️ Print / Save PDF
                         </button>
+                        {onNewPlan && (
+                            <button
+                                className="btn btn-secondary"
+                                onClick={onNewPlan}
+                                style={{ borderColor: 'rgba(239, 68, 68, 0.3)', color: '#fca5a5' }}
+                            >
+                                Start New Plan 🗑️
+                            </button>
+                        )}
                     </div>
                     {saveMessage && (
                         <div className={`save-message ${saveMessage.type}`}>
@@ -171,6 +188,8 @@ function DocumentGenerator({
         </div>
     );
 }
+
+
 
 function CombinedDocument({
     solutions,
@@ -186,15 +205,22 @@ function CombinedDocument({
     return (
         <div className="combined-document">
             <div className="document-header">
-                <h2>POC Plan</h2>
                 {customerInfo.companyName && (
-                    <p className="document-meta">
-                        <strong>{customerInfo.companyName}</strong>
-                        {customerInfo.pocStartDate && (
-                            <span> | Date: {customerInfo.pocStartDate}</span>
-                        )}
+                    <h1 style={{ margin: '0 0 0.5rem 0', fontSize: '2rem', color: 'var(--primary-color)' }}>
+                        {customerInfo.companyName}
+                    </h1>
+                )}
+                <h2 style={{ marginTop: 0, fontSize: '1.5rem', opacity: 0.9 }}>Proof of Concept Implementation Plan</h2>
+                {customerInfo.pocStartDate && (
+                    <p className="document-meta" style={{ marginTop: '0.5rem', color: 'var(--text-secondary)' }}>
+                        Date: {customerInfo.pocStartDate}
                     </p>
                 )}
+            </div>
+
+            <div className="document-overview" style={{ marginBottom: '2rem', paddingBottom: '1rem', borderBottom: '1px solid var(--border-color)' }}>
+                <h3>Overview</h3>
+                <p>To ensure a successful Proof of Concept, please complete the technical pre-requisites and success criteria items outlined below.</p>
             </div>
 
             {solutions.length === 0 ? (
@@ -229,47 +255,50 @@ function CombinedDocument({
                                         No success criteria defined - select use cases to define success criteria.
                                     </p>
                                 ) : (
-                                    <table className="success-plan-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Milestone</th>
-                                                <th>Prerequisites</th>
-                                                <th>Owner</th>
-                                                <th>Target Date</th>
-                                                <th>Status</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {selected.map((uc) => (
-                                                <tr key={uc.id}>
-                                                    <td>{uc.text}</td>
-                                                    <td>
-                                                        {uc.prerequisites && uc.prerequisites.length > 0 ? (
-                                                            <ul style={{ margin: 0, paddingLeft: '1.2rem', fontSize: '0.9em' }}>
-                                                                {uc.prerequisites.map((prereq, idx) => (
-                                                                    <li key={idx}>{prereq}</li>
-                                                                ))}
-                                                            </ul>
-                                                        ) : (
-                                                            '—'
+                                    <ul className="success-criteria-list" style={{ listStyle: 'none', padding: 0 }}>
+                                        {selected.map((uc) => (
+                                            <li key={uc.id} style={{ marginBottom: '1.5rem' }}>
+                                                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem' }}>
+                                                    <span style={{ fontSize: '1.25em', lineHeight: '1.2', color: 'var(--text-secondary)' }}>☐</span>
+                                                    <div style={{ flex: 1 }}>
+                                                        <div style={{ fontWeight: 600, fontSize: '1.05em', marginBottom: '0.25rem' }}>{uc.text}</div>
+
+                                                        <div style={{ display: 'flex', gap: '1.5rem', fontSize: '0.85em', color: 'var(--text-secondary)', marginBottom: '0.5rem', flexWrap: 'wrap' }}>
+                                                            <span>Owner: ____________</span>
+                                                            <span>Target: ____________</span>
+                                                            <span>Status: Pending</span>
+                                                        </div>
+
+                                                        {uc.prerequisites && uc.prerequisites.length > 0 && (
+                                                            <div style={{ fontSize: '0.9em', color: 'var(--text-muted)' }}>
+                                                                <div style={{ fontStyle: 'italic', marginBottom: '0.25rem' }}>Prerequisites:</div>
+                                                                <ul style={{ margin: 0, paddingLeft: '1.25rem' }}>
+                                                                    {uc.prerequisites.map((prereq, idx) => (
+                                                                        <li key={idx} style={{ marginBottom: '0.125rem' }}>{prereq}</li>
+                                                                    ))}
+                                                                </ul>
+                                                            </div>
                                                         )}
-                                                    </td>
-                                                    <td>—</td>
-                                                    <td>—</td>
-                                                    <td><span className="status-badge status-pending">Pending</span></td>
-                                                </tr>
-                                            ))}
-                                            {custom && (
-                                                <tr>
-                                                    <td><em>{custom}</em></td>
-                                                    <td>—</td>
-                                                    <td>—</td>
-                                                    <td>—</td>
-                                                    <td><span className="status-badge status-pending">Pending</span></td>
-                                                </tr>
-                                            )}
-                                        </tbody>
-                                    </table>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        ))}
+                                        {custom && (
+                                            <li style={{ marginBottom: '1.5rem' }}>
+                                                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem' }}>
+                                                    <span style={{ fontSize: '1.25em', lineHeight: '1.2', color: 'var(--text-secondary)' }}>☐</span>
+                                                    <div style={{ flex: 1 }}>
+                                                        <div style={{ fontWeight: 600, fontSize: '1.05em', marginBottom: '0.25rem' }}>{custom}</div>
+                                                        <div style={{ display: 'flex', gap: '1.5rem', fontSize: '0.85em', color: 'var(--text-secondary)' }}>
+                                                            <span>Owner: ____________</span>
+                                                            <span>Target: ____________</span>
+                                                            <span>Status: Pending</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        )}
+                                    </ul>
                                 )}
                             </div>
                         </div>

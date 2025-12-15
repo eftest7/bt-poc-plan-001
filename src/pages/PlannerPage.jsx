@@ -3,8 +3,10 @@ import { getFullSolutionsData } from '../services/dataService';
 import SolutionSelector from '../components/SolutionSelector';
 import UseCaseCollector from '../components/UseCaseCollector';
 import DocumentGenerator from '../components/DocumentGenerator';
+import PageHeader from '../components/common/PageHeader';
 
 import './ManagementPage.css';
+import './PlannerPage.css';
 
 function PlannerPage() {
     const [solutions, setSolutions] = useState([]);
@@ -62,6 +64,20 @@ function PlannerPage() {
         setCustomUseCases(prev => ({ ...prev, [solutionId]: text }));
     };
 
+    const handleNewPlan = () => {
+        console.log('Start New Plan clicked');
+        if (window.confirm('Are you sure you want to start a new plan? This will clear all current selections and entries.')) {
+            setSelectedSolutions([]);
+            setSelectedUseCases({});
+            setCustomUseCases({});
+            setCustomerInfo({
+                companyName: '',
+                pocStartDate: new Date().toISOString().split('T')[0]
+            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    };
+
     if (loading) {
         return (
             <div className="planner-page">
@@ -75,12 +91,11 @@ function PlannerPage() {
 
     return (
         <div className="planner-page">
-            <div className="page-header">
-                <div className="header-content">
-                    <h1><span className="page-icon">📝</span>POC Planner</h1>
-                    <p>Plan your POC by selecting solutions and use cases.</p>
-                </div>
-            </div>
+            <PageHeader
+                icon="📝"
+                title="POC Planner"
+                description="Plan your POC by selecting solutions and use cases."
+            />
 
             {/* Section 1: Solution Selector */}
             <section className="page-section fade-in">
@@ -90,6 +105,8 @@ function PlannerPage() {
                     onSelect={handleSolutionSelect}
                 />
             </section>
+
+            <div className="section-divider"></div>
 
             {/* Section 2: Use Case Collector */}
             <section className="page-section fade-in">
@@ -102,6 +119,8 @@ function PlannerPage() {
                 />
             </section>
 
+            <div className="section-divider"></div>
+
             {/* Section 3: Document Generator */}
             <section className="page-section fade-in">
                 <DocumentGenerator
@@ -110,8 +129,11 @@ function PlannerPage() {
                     customUseCases={customUseCases}
                     customerInfo={customerInfo}
                     onCustomerInfoChange={setCustomerInfo}
+                    onNewPlan={handleNewPlan}
                 />
             </section>
+
+
         </div>
     );
 }
