@@ -63,7 +63,7 @@ function DocumentGenerator({
             // Pre-requisites section
             content += 'Technical Pre-requisites:\n';
             (solution.solutionPrereqs || solution.prereqs || []).forEach(prereq => {
-                content += `  • ${prereq}\n`;
+                content += `  • ${prereq.text || prereq}\n`;
             });
 
             // Success criteria section
@@ -243,7 +243,7 @@ function CombinedDocument({
                                 <h4>Technical Pre-requisites</h4>
                                 <ul className="prereqs-list">
                                     {(solution.solutionPrereqs || solution.prereqs || []).map((prereq, index) => (
-                                        <li key={index}>{prereq}</li>
+                                        <li key={index}>{prereq.text || prereq}</li>
                                     ))}
                                 </ul>
                             </div>
