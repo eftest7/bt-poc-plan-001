@@ -284,7 +284,7 @@ function DashboardPage() {
                                     {solution.displayPrereqs.length > 0 && (
                                         <div className="section-block prereqs-block">
                                             <h4 className="section-title">
-                                                <span className="icon">📋</span> Solution Prerequisites
+                                                <span className="icon">📋</span> {solution.displayPrereqs.length} Solution Prerequisites
                                             </h4>
                                             <div className="prereqs-list-cards">
                                                 {solution.displayPrereqs.map((prereq) => (
@@ -325,7 +325,7 @@ function DashboardPage() {
                                     {solution.displayUseCases.length > 0 && (
                                         <div className="section-block usecases-block">
                                             <h4 className="section-title">
-                                                <span className="icon">🎯</span> Use Cases
+                                                <span className="icon">🎯</span> {solution.displayUseCases.length} Use Cases
                                             </h4>
                                             {/* Changed from grid to list */}
                                             <div className="usecases-list">
