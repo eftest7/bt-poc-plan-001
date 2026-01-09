@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BAR Demo - Path Portals</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #1a1a2e;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .container {
+      max-width: 1200px;
+      width: 100%;
+    }
+    h1 {
+      color: #FF5500;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .subtitle {
+      color: #888;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .slideshow {
+      position: relative;
+      background: #000;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    }
+    .slide {
+      display: none;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+    .slide.active {
+      display: block;
+    }
+    .slide img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .caption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(transparent, rgba(0,0,0,0.9));
+      color: white;
+      padding: 40px 20px 20px;
+      font-size: 18px;
+    }
+    .controls {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    button {
+      background: #FF5500;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background: #cc4400;
+    }
+    button:disabled {
+      background: #666;
+      cursor: not-allowed;
+    }
+    .progress {
+      display: flex;
+      justify-content: center;
+      gap: 5px;
+      margin-top: 15px;
+    }
+    .dot {
+      width: 10px;
+      height: 10px;
+      background: #444;
+      border-radius: 50%;
+      transition: background 0.3s;
+    }
+    .dot.active {
+      background: #FF5500;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>BAR Demo - Acme Corporation</h1>
+    <p class="subtitle">Business Account Review Walkthrough</p>
+
+    <div class="slideshow">
+      
+        <div class="slide active" data-duration="2000">
+          <img src="../frames/frame-000.png" alt="Home page - Path Portals">
+          <div class="caption">Home page - Path Portals</div>
+        </div>
+      
+        <div class="slide" data-duration="2000">
+          <img src="../frames/frame-001.png" alt="BAR page loaded">
+          <div class="caption">BAR page loaded</div>
+        </div>
+      
+        <div class="slide" data-duration="1500">
+          <img src="../frames/frame-002.png" alt="Enter company name">
+          <div class="caption">Enter company name</div>
+        </div>
+      
+        <div class="slide" data-duration="1500">
+          <img src="../frames/frame-003.png" alt="Enter attendees">
+          <div class="caption">Enter attendees</div>
+        </div>
+      
+        <div class="slide" data-duration="1500">
+          <img src="../frames/frame-004.png" alt="Select Password Safe">
+          <div class="caption">Select Password Safe</div>
+        </div>
+      
+        <div class="slide" data-duration="1500">
+          <img src="../frames/frame-005.png" alt="Configure version & deployment">
+          <div class="caption">Configure version & deployment</div>
+        </div>
+      
+        <div class="slide" data-duration="1500">
+          <img src="../frames/frame-006.png" alt="Select PM Windows/Mac">
+          <div class="caption">Select PM Windows/Mac</div>
+        </div>
+      
+        <div class="slide" data-duration="2000">
+          <img src="../frames/frame-007.png" alt="Solutions configured">
+          <div class="caption">Solutions configured</div>
+        </div>
+      
+        <div class="slide" data-duration="2000">
+          <img src="../frames/frame-008.png" alt="Select future initiatives">
+          <div class="caption">Select future initiatives</div>
+        </div>
+      
+        <div class="slide" data-duration="1500">
+          <img src="../frames/frame-009.png" alt="Answer discovery questions">
+          <div class="caption">Answer discovery questions</div>
+        </div>
+      
+        <div class="slide" data-duration="1500">
+          <img src="../frames/frame-010.png" alt="Select platforms">
+          <div class="caption">Select platforms</div>
+        </div>
+      
+        <div class="slide" data-duration="2500">
+          <img src="../frames/frame-011.png" alt="Export to PDF">
+          <div class="caption">Export to PDF</div>
+        </div>
+      
+    </div>
+
+    <div class="controls">
+      <button id="prev">Previous</button>
+      <button id="playPause">Play</button>
+      <button id="next">Next</button>
+    </div>
+
+    <div class="progress">
+      <div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+    </div>
+  </div>
+
+  <script>
+    const slides = document.querySelectorAll('.slide');
+    const dots = document.querySelectorAll('.dot');
+    const playPauseBtn = document.getElementById('playPause');
+    let currentSlide = 0;
+    let isPlaying = false;
+    let timer = null;
+
+    function showSlide(index) {
+      slides.forEach((s, i) => {
+        s.classList.toggle('active', i === index);
+        dots[i].classList.toggle('active', i === index);
+      });
+      currentSlide = index;
+    }
+
+    function nextSlide() {
+      showSlide((currentSlide + 1) % slides.length);
+    }
+
+    function prevSlide() {
+      showSlide((currentSlide - 1 + slides.length) % slides.length);
+    }
+
+    function play() {
+      if (isPlaying) return;
+      isPlaying = true;
+      playPauseBtn.textContent = 'Pause';
+      scheduleNext();
+    }
+
+    function pause() {
+      isPlaying = false;
+      playPauseBtn.textContent = 'Play';
+      if (timer) clearTimeout(timer);
+    }
+
+    function scheduleNext() {
+      if (!isPlaying) return;
+      const duration = parseInt(slides[currentSlide].dataset.duration) || 2000;
+      timer = setTimeout(() => {
+        nextSlide();
+        scheduleNext();
+      }, duration);
+    }
+
+    document.getElementById('prev').onclick = () => { pause(); prevSlide(); };
+    document.getElementById('next').onclick = () => { pause(); nextSlide(); };
+    playPauseBtn.onclick = () => isPlaying ? pause() : play();
+
+    // Auto-play on load
+    setTimeout(play, 1000);
+  </script>
+</body>
+</html>
